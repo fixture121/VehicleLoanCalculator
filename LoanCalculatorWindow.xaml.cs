@@ -28,7 +28,7 @@ namespace A2ToufiqCharania
         private void vehicleType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             /*
-             * Casts the sender object to ComboBox and then gets the selected item from the ComboBox to display the vehicle type
+             * Casts the sender object to ComboBox and then gets the selected item from ComboBox to display the vehicle type
              * Reference: https://stackoverflow.com/questions/17007642/combobox-sender-selectionchanged-event-c-sharp
             */
             ComboBox comboBox = sender as ComboBox;
@@ -57,7 +57,7 @@ namespace A2ToufiqCharania
                 MessageBox.Show("Please select a vehicle type");
                 return;
             }
-
+            // Displays vehicle type
             MessageBox.Show($"Vehicle Type: {type}");
         }
     }
