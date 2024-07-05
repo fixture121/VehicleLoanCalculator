@@ -1,4 +1,4 @@
-# A2ToufiqCharania
+# Assignment 2
 
 A C# WPF application for a vehicle loan caluclator.
 The application asks the user to log in. Once the user is logged in, the vehicle loan calculator is displayed in the next window.
