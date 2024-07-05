@@ -26,7 +26,7 @@
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Label Grid.Row="1" Grid.Column="0" Content="Type of Vehicle:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="vehicleType" Text="Slect the Type of Vehicle" VerticalAlignment="Center">
+            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="vehicleType" Text="Select the Type of Vehicle" VerticalAlignment="Center" SelectionChanged="vehicleType_SelectionChanged">
                 <ComboBoxItem x:Name="car" Content="Car" />
                 <ComboBoxItem x:Name="truck" Content="Truck" />
                 <ComboBoxItem x:Name="familyVan" Content="Family Van" />

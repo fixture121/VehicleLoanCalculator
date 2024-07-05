@@ -14,15 +14,17 @@ namespace A2ToufiqCharania
         string password1 = "1234";
 
         string user2 = "prof";
-        string password2 = "password";
+        string password2 = "ali";
 
         public bool ValidateUser(string username, string password)
         {
+            // If either username or password are blank, return false to notify user which field was left blank
             if (string.IsNullOrEmpty(username) || (string.IsNullOrEmpty(password)))
             {
                 return false;
             }
 
+            // If username and password are correct, return true to validate the user, else return false and notify user
             if ((string.Equals(username, user1) && string.Equals(password, password1)) || string.Equals(username, user2) && string.Equals(password, password2))
             {
                 return true;

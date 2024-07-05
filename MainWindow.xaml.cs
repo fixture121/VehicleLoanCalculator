@@ -18,7 +18,6 @@ namespace A2ToufiqCharania
         public MainWindow()
         {
             InitializeComponent();
-            newLogin = new Login();
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
@@ -36,9 +35,10 @@ namespace A2ToufiqCharania
                 return;
             }
 
-            var isValidUser = newLogin.ValidateUser(username.Text, password.Password);
+            // Validate user's credentials and displays the corresponding message
+            var validUser = newLogin.ValidateUser(username.Text, password.Password);
 
-            if (!isValidUser)
+            if (!validUser)
             {
                 MessageBox.Show("Invalid Username or Password");
                 return;
