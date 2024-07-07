@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A2ToufiqCharania"
         mc:Ignorable="d"
-        Title="LoanCalculatorWindow" Height="450" Width="800">
+        Title="LoanCalculatorWindow" Height="500" Width="800" MaxWidth="800">
     <Grid>
         <Label Content="Vehicle Loan Calculator" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" />
         <Grid Margin="5">
@@ -24,9 +24,10 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Label Grid.Row="1" Grid.Column="0" Content="Type of Vehicle:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="vehicleType" Text="Select the Type of Vehicle" VerticalAlignment="Center" SelectionChanged="vehicleType_SelectionChanged">
+            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="vehicleType" Text="Select the Type of Vehicle" VerticalAlignment="Center">
                 <ComboBoxItem x:Name="car" Content="Car" />
                 <ComboBoxItem x:Name="truck" Content="Truck" />
                 <ComboBoxItem x:Name="familyVan" Content="Family Van" />
@@ -35,27 +36,44 @@
             <!-- Used StackPanel to align radio buttons side-by-side in row -->
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <!-- Used VerticalContentAlignment to centre radio button label with radio select option -->
-                <RadioButton Content="New" VerticalContentAlignment="Center" FontSize="16"  Margin="5" />
-                <RadioButton Content="Used" VerticalContentAlignment="Center" FontSize="16" Margin="5" />
+                <RadioButton x:Name="newVehicle" Content="New" VerticalContentAlignment="Center" FontSize="16"  Margin="5" />
+                <RadioButton x:Name="usedVehicle" Content="Used" VerticalContentAlignment="Center" FontSize="16" Margin="5" />
             </StackPanel>
             <Label Grid.Row="3" Grid.Column="0" Content="Price of Vehicle:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
             <!-- Used VerticalContentAlignment to vertically centre text in the middle of the TextBox -->
-            <TextBox x:Name="price" Grid.Row="3" Grid.Column="1" Height="25" VerticalContentAlignment="Center" />
+            <TextBox x:Name="vehiclePrice" Grid.Row="3" Grid.Column="1" Height="25" VerticalContentAlignment="Center" PreviewTextInput="vehiclePrice_PreviewTextInput" />
             <Label Grid.Row="4" Grid.Column="0" Content="Down Payment:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <TextBox x:Name="downPayment" Grid.Row="4" Grid.Column="1" Height="25" VerticalContentAlignment="Center" />
+            <TextBox x:Name="downPayment" Grid.Row="4" Grid.Column="1" Height="25" VerticalContentAlignment="Center" PreviewTextInput="downPayment_PreviewTextInput" />
             <Label Grid.Row="5" Grid.Column="0" Content="Interest Rate:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <TextBox x:Name="interest" Grid.Row="5" Grid.Column="1" Height="25" VerticalContentAlignment="Center" />
+            <TextBox x:Name="interestRate" Grid.Row="5" Grid.Column="1" Height="25" VerticalContentAlignment="Center" PreviewTextInput="interestRate_PreviewTextInput" />
             <Label Grid.Row="6" Grid.Column="0" Content="Loan Payment Period:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <Slider Grid.Row="6" Grid.Column="1" x:Name="paymentPeriod" Minimum="12" Maximum="96" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
-            <Label Grid.Row="7" Grid.Column="0" Content="Loan Payment Frequency:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <ComboBox Grid.Row="7" Grid.Column="1" x:Name="paymentFreq" Text="Select the Payment Frequency" VerticalAlignment="Center">
+            <Slider Grid.Row="6" Grid.Column="1" x:Name="paymentPeriod" Minimum="12" Maximum="96" TickFrequency="12" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+            <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Run Text="12" />
+                <Run Text="              " />
+                <Run Text="24" />
+                <Run Text="              " />
+                <Run Text="36" />
+                <Run Text="              " />
+                <Run Text="48" />
+                <Run Text="              " />
+                <Run Text="60" />
+                <Run Text="              " />
+                <Run Text="72" />
+                <Run Text="              " />
+                <Run Text="84" />
+                <Run Text="              " />
+                <Run Text="96" />
+            </TextBlock>
+            <Label Grid.Row="8" Grid.Column="0" Content="Loan Payment Frequency:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
+            <ComboBox Grid.Row="8" Grid.Column="1" x:Name="paymentFreq" Text="Select the Payment Frequency" VerticalAlignment="Center">
                 <ComboBoxItem x:Name="weekly" Content="Weekly" />
                 <ComboBoxItem x:Name="biWeekly" Content="Bi-Weekly" />
                 <ComboBoxItem x:Name="monthly" Content="Monthly" />
             </ComboBox>
-            <Label Grid.Row="8" Grid.Column="0" Content="Estimated Fixed Rate Loan Payment:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
+            <Label Grid.Row="9" Grid.Column="0" Content="Estimated Fixed Rate Loan Payment:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
             <!-- TODO: insert calculation in a textbox here -->
-            <Button Grid.Row="9" Grid.Column="1" x:Name="calculate" Content="Calculate Loan Estimate" Click="calculate_Click" Width="200" FontSize="16" />
+            <Button Grid.Row="10" Grid.Column="1" x:Name="calculate" Content="Calculate Loan Estimate" Click="calculate_Click" Width="200" FontSize="16" />
         </Grid>
     </Grid>
 </Window>

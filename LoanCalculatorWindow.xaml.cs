@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,49 +18,117 @@ namespace A2ToufiqCharania
 {
     public partial class LoanCalculatorWindow : Window
     {
-        private string type;
-        private string age;
-
         public LoanCalculatorWindow()
         {
             InitializeComponent();
         }
 
-        // Stores the vehicle type selected by the user
-        private void vehicleType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // Vehicle Price
+        private void vehiclePrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            /*
-             * Casts the sender object to ComboBox and then gets the selected item from ComboBox to display the vehicle type
-             * Reference: https://stackoverflow.com/questions/17007642/combobox-sender-selectionchanged-event-c-sharp
-            */
-            ComboBox comboBox = sender as ComboBox;
-            ComboBoxItem selectedItem = comboBox.SelectedItem as ComboBoxItem;
-            if (selectedItem != null)
-            {
-                type = selectedItem.Content.ToString();
-            }
+            // Regex to match digits, decimal point, and negative sign
+            Regex regex = new Regex("[^0-9.-]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
 
-        // Stores the vehicle's age selected by the user
-      /*  private void vehicleAge_Checked(object sender, RoutedEventArgs e)
+        // Down Payment
+        private void downPayment_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            RadioButton radioButton = sender as RadioButton;
-            if (radioButton != null)
-            {
-                vehicleAge = radioButton.Content.ToString();
-            }
-        }*/
+            Regex regex = new Regex("[^0-9.-]+");
+            e.Handled |= regex.IsMatch(e.Text);
+        }
+
+        // Interest Rate
+        private void interestRate_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9.-]+");
+            e.Handled |= regex.IsMatch(e.Text);
+        }
+
+        // Payment Period
+        private void paymentPeriod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int frequency = (int)Math.Round(paymentPeriod.Value);
+        }
 
         private void calculate_Click(object sender, RoutedEventArgs e)
         {
-            // Checks if the user selected vehicle type and notifies the user to select the vehicle type if not selected
-            if (string.IsNullOrEmpty(type))
+            // Vehicle Type
+            // Checks if vehicle type was selected by the user
+            if (vehicleType.SelectedItem == null)
             {
                 MessageBox.Show("Please select a vehicle type");
                 return;
             }
-            // Displays vehicle type
-            MessageBox.Show($"Vehicle Type: {type}");
+
+            // https://stackoverflow.com/questions/17007642/combobox-sender-selectionchanged-event-c-sharp
+            ComboBoxItem typeSelected = (ComboBoxItem)vehicleType.SelectedItem;
+            string type = typeSelected.Content.ToString();
+
+            // Vehicle Age
+            string age;
+            if (newVehicle.IsChecked == true)
+            {
+                age = "New";
+            }
+            else if (usedVehicle.IsChecked == true)
+            {
+                age = "Used";
+            }
+            else
+            {
+                MessageBox.Show("Please select vehicle age");
+                return;
+            }
+
+            // Vehicle Price
+            if (string.IsNullOrEmpty(vehiclePrice.Text))
+            {
+                MessageBox.Show("Please enter vehicle price");
+                return;
+            }
+
+            // Down Payment
+            if (string.IsNullOrEmpty(downPayment.Text))
+            {
+                MessageBox.Show("Please enter down payment");
+                return;
+            }
+
+            // Interest Rate
+            if (string.IsNullOrEmpty(interestRate.Text))
+            {
+                MessageBox.Show("Please enter interest rate");
+                return;
+            }
+
+            // Payment Frequency
+            if (paymentFreq.SelectedItem == null)
+            {
+                MessageBox.Show("Please select payment frequency");
+                return;
+            }
+
+            ComboBoxItem freqSelected = (ComboBoxItem)paymentFreq.SelectedItem;
+            string freq = freqSelected.Content.ToString();
+
+
+
+
+            // Parse input values
+            double vehiclePriceValue = double.Parse(vehiclePrice.Text);
+            double downPaymentValue = double.Parse(downPayment.Text);
+            double interestRateValue = double.Parse(interestRate.Text);
+            int paymentPeriodValue = (int)Math.Round(paymentPeriod.Value);
+            string paymentFrequencyValue = ((ComboBoxItem)paymentFreq.SelectedItem).Content.ToString();
+
+            // Call the loan calculation method from LoanCalculator class
+            double monthlyPayment = CalculateLoan.Calculate(vehiclePriceValue, downPaymentValue, interestRateValue, paymentPeriodValue, paymentFrequencyValue);
+
+            // Display the result
+            MessageBox.Show($"Loan Details:\nVehicle Type: {type}\nVehicle Age: {age}\nVehicle Price: ${vehiclePrice.Text}\nDown Payment: ${downPayment.Text}\nInterest Rate: {interestRate.Text}%\nLoan Payment Period: {paymentPeriodValue}\nPayment Frequency: {paymentFrequencyValue}\nEstimated Monthly Payment: ${monthlyPayment}");
+
+            /*MessageBox.Show("Loan Details:\nVehicle Type: " + type + "\nVehicle Age: " + age + "\nVehicle Price: $" + vehiclePrice.Text + "\nDown Payment: $" + downPayment.Text + "\nInterest Rate: " + interestRate.Text + "%\n" + "Loan Payment Period: " + paymentPeriod.Value + "\nPayment Frequency: " + freq);*/
         }
     }
 }
