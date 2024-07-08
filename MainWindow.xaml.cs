@@ -1,4 +1,10 @@
-﻿using System.Text;
+﻿/*
+ * Assignment: 2
+ * Toufiq Charania
+ * Sheridan ID: 991721655
+*/
+
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

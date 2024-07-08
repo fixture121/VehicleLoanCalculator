@@ -28,6 +28,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="1" Grid.Column="0" Content="Type of Vehicle:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
             <ComboBox Grid.Row="1" Grid.Column="1" x:Name="vehicleType" Text="Select the Type of Vehicle" VerticalAlignment="Center">
+                <ComboBoxItem IsEnabled="False">Select the Type of Vehicle</ComboBoxItem>
                 <ComboBoxItem x:Name="car" Content="Car" />
                 <ComboBoxItem x:Name="truck" Content="Truck" />
                 <ComboBoxItem x:Name="familyVan" Content="Family Van" />
@@ -50,6 +51,7 @@
             <Slider Grid.Row="6" Grid.Column="1" x:Name="paymentPeriod" Minimum="12" Maximum="96" TickFrequency="12" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
             <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Run Text="12" />
+                <!-- Added blank spaces to space out numbers in slider -->
                 <Run Text="              " />
                 <Run Text="24" />
                 <Run Text="              " />
@@ -67,12 +69,13 @@
             </TextBlock>
             <Label Grid.Row="8" Grid.Column="0" Content="Loan Payment Frequency:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
             <ComboBox Grid.Row="8" Grid.Column="1" x:Name="paymentFreq" Text="Select the Payment Frequency" VerticalAlignment="Center">
+                <ComboBoxItem IsEnabled="False">Select the Payment Frequency</ComboBoxItem>
                 <ComboBoxItem x:Name="weekly" Content="Weekly" />
                 <ComboBoxItem x:Name="biWeekly" Content="Bi-Weekly" />
                 <ComboBoxItem x:Name="monthly" Content="Monthly" />
             </ComboBox>
             <Label Grid.Row="9" Grid.Column="0" Content="Estimated Fixed Rate Loan Payment:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" />
-            <!-- TODO: insert calculation in a textbox here -->
+            <TextBox Grid.Row="9" Grid.Column="1" x:Name="estimatedMonthlyPayment" VerticalAlignment="Center" Height="25" FontSize="16" IsReadOnly="True" />
             <Button Grid.Row="10" Grid.Column="1" x:Name="calculate" Content="Calculate Loan Estimate" Click="calculate_Click" Width="200" FontSize="16" />
         </Grid>
     </Grid>

@@ -23,49 +23,65 @@ namespace A2ToufiqCharania
             InitializeComponent();
         }
 
-        // Vehicle Price
+        /*
+         * Event handler for Vehicle Price
+         * Used PreviewInputText instead of TextChanged because TextChanged checks for input match after the user clicks the 'Calculate' button
+         * PreviewTextInput dynamically validates the vehicle price inputted by the user to ensure that only numbers (including decimals numbers) are entered
+         * Reference: https://stackoverflow.com/questions/52728111/c-sharp-wpf-textbox-difference-between-textchanged-and-previewtextinput
+         */
         private void vehiclePrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Regex to match digits, decimal point, and negative sign
-            Regex regex = new Regex("[^0-9.-]+");
+            /*
+             * Used Regex to ensure the user's input matches the allowed pattern
+             * The allowed pattern for vehiclePrice includes numbers and a decimal point
+             * References: https://www.programiz.com/csharp-programming/regex, https://stackoverflow.com/questions/23512507/validate-a-number-with-regex
+             */
+            Regex regex = new Regex("[^0-9.]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        // Down Payment
+        // Event handler for Down Payment
         private void downPayment_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9.-]+");
+            Regex regex = new Regex("[^0-9.]+");
             e.Handled |= regex.IsMatch(e.Text);
         }
 
-        // Interest Rate
+        // Event handler for Interest Rate
         private void interestRate_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9.-]+");
+            Regex regex = new Regex("[^0-9.]+");
             e.Handled |= regex.IsMatch(e.Text);
         }
 
-        // Payment Period
+        /*
+         * Event handler for Payment Period
+         * The event handler is triggered when the selection is changed by the user
+         */
         private void paymentPeriod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int frequency = (int)Math.Round(paymentPeriod.Value);
+            // Casts the payment period's value to an integer and stores in the frequency variable to use for calculation
+            int frequency = (int)paymentPeriod.Value;
         }
 
+        // Event handler for Calculate button
         private void calculate_Click(object sender, RoutedEventArgs e)
         {
-            // Vehicle Type
-            // Checks if vehicle type was selected by the user
+             // Checks if vehicle type was selected by the user
             if (vehicleType.SelectedItem == null)
             {
                 MessageBox.Show("Please select a vehicle type");
                 return;
             }
 
-            // https://stackoverflow.com/questions/17007642/combobox-sender-selectionchanged-event-c-sharp
+            /*
+             * Gets the combo box item selected by the user and converts it to a string
+             * Reference: https://stackoverflow.com/questions/17007642/combobox-sender-selectionchanged-event-c-sharp
+             */
             ComboBoxItem typeSelected = (ComboBoxItem)vehicleType.SelectedItem;
             string type = typeSelected.Content.ToString();
 
-            // Vehicle Age
+            // Checks which radio button the user selected and stores in to the variable age
             string age;
             if (newVehicle.IsChecked == true)
             {
@@ -77,32 +93,33 @@ namespace A2ToufiqCharania
             }
             else
             {
+                // If user did not select the vehicle age, lets user know to select the age
                 MessageBox.Show("Please select vehicle age");
                 return;
             }
 
-            // Vehicle Price
+            // Checks if Vehicle Price was entered by user and notifies user if left blank
             if (string.IsNullOrEmpty(vehiclePrice.Text))
             {
                 MessageBox.Show("Please enter vehicle price");
                 return;
             }
 
-            // Down Payment
+            // Checks if Down Payment was entered by user and notifies user if left blank (user can enter 0 as well)
             if (string.IsNullOrEmpty(downPayment.Text))
             {
                 MessageBox.Show("Please enter down payment");
                 return;
             }
 
-            // Interest Rate
+            // Checks if Interest Rate was entered by user and notifies user if left blank (user can enter 0 as well)
             if (string.IsNullOrEmpty(interestRate.Text))
             {
                 MessageBox.Show("Please enter interest rate");
                 return;
             }
 
-            // Payment Frequency
+            // If user did not select the payment frequency, lets user know to select payment frequency
             if (paymentFreq.SelectedItem == null)
             {
                 MessageBox.Show("Please select payment frequency");
@@ -112,23 +129,24 @@ namespace A2ToufiqCharania
             ComboBoxItem freqSelected = (ComboBoxItem)paymentFreq.SelectedItem;
             string freq = freqSelected.Content.ToString();
 
-
-
-
-            // Parse input values
+            // Gets the input value the user entered and parses the values and stores into new variables to use for calculation
             double vehiclePriceValue = double.Parse(vehiclePrice.Text);
             double downPaymentValue = double.Parse(downPayment.Text);
             double interestRateValue = double.Parse(interestRate.Text);
             int paymentPeriodValue = (int)Math.Round(paymentPeriod.Value);
             string paymentFrequencyValue = ((ComboBoxItem)paymentFreq.SelectedItem).Content.ToString();
 
-            // Call the loan calculation method from LoanCalculator class
+            // Call the loan calculation method from the LoanCalculator class
             double monthlyPayment = CalculateLoan.Calculate(vehiclePriceValue, downPaymentValue, interestRateValue, paymentPeriodValue, paymentFrequencyValue);
 
-            // Display the result
-            MessageBox.Show($"Loan Details:\nVehicle Type: {type}\nVehicle Age: {age}\nVehicle Price: ${vehiclePrice.Text}\nDown Payment: ${downPayment.Text}\nInterest Rate: {interestRate.Text}%\nLoan Payment Period: {paymentPeriodValue}\nPayment Frequency: {paymentFrequencyValue}\nEstimated Monthly Payment: ${monthlyPayment}");
+            /* 
+             * Displays the estimated monthly payment in the textbox of the application in currency format
+             * Reference: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
+             */
+            estimatedMonthlyPayment.Text = monthlyPayment.ToString("C");
 
-            /*MessageBox.Show("Loan Details:\nVehicle Type: " + type + "\nVehicle Age: " + age + "\nVehicle Price: $" + vehiclePrice.Text + "\nDown Payment: $" + downPayment.Text + "\nInterest Rate: " + interestRate.Text + "%\n" + "Loan Payment Period: " + paymentPeriod.Value + "\nPayment Frequency: " + freq);*/
+            // Displays the full loan details in a popup window
+            MessageBox.Show($"Loan Details:\nVehicle Type: {type}\nVehicle Age: {age}\nVehicle Price: ${vehiclePrice.Text}\nDown Payment: ${downPayment.Text}\nInterest Rate: {interestRate.Text}%\nLoan Payment Period: {paymentPeriodValue}\nPayment Frequency: {paymentFrequencyValue}\nEstimated Monthly Payment: ${monthlyPayment}");
         }
     }
 }
